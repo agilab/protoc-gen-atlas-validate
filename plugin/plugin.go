@@ -375,7 +375,7 @@ func (p *Plugin) GetDeniedMethods(options []av_opts.AtlasValidateFieldOption_Ope
 		switch op {
 		case av_opts.AtlasValidateFieldOption_create:
 			httpMethods["POST"] = struct{}{}
-		case av_opts.AtlasValidateFieldOption_update:
+		case av_opts.AtlasValidateFieldOption_patch:
 			httpMethods["PATCH"] = struct{}{}
 		case av_opts.AtlasValidateFieldOption_replace:
 			httpMethods["PUT"] = struct{}{}
@@ -398,7 +398,7 @@ func (p *Plugin) GetRequiredMethods(options []av_opts.AtlasValidateFieldOption_O
 		switch op {
 		case av_opts.AtlasValidateFieldOption_create:
 			requiredMethods["POST"] = struct{}{}
-		case av_opts.AtlasValidateFieldOption_update:
+		case av_opts.AtlasValidateFieldOption_patch:
 			requiredMethods["PATCH"] = struct{}{}
 		case av_opts.AtlasValidateFieldOption_replace:
 			requiredMethods["PUT"] = struct{}{}

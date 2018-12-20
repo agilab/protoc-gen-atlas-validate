@@ -39,8 +39,8 @@ message AtlasValidateFieldOption {
     //Field allow only on create operation
     create = 0;
 
-    //Field allow only on update operation
-    update = 1;
+    //Field allow only on patch operation
+    patch = 1;
 
     //Field allow only on replace operation
     replace = 2;
