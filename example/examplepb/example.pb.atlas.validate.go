@@ -369,9 +369,9 @@ func (o *Address) AtlasValidateJSON(ctx context.Context, r json.RawMessage, path
 // ValidateDeniedFields function return denied fields of objectAddress.
 func (o *Address) ValidateDeniedFields() map[string][]string {
 	return map[string][]string{
+		"PATCH": []string{"State"},
 		"POST":  []string{"State"},
 		"PUT":   []string{"State"},
-		"PATCH": []string{"State"},
 	}
 }
 
@@ -431,8 +431,8 @@ func (o *Group) AtlasValidateJSON(ctx context.Context, r json.RawMessage, path s
 func (o *Group) ValidateRequiredFields() map[string][]string {
 	return map[string][]string{
 		"PATCH": []string{"Id"},
-		"PUT":   []string{"Id"},
 		"POST":  []string{"Name"},
+		"PUT":   []string{"Id"},
 	}
 }
 

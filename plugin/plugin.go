@@ -432,10 +432,17 @@ func (p *Plugin) generateValidateDeniedFields(md *descriptor.DescriptorProto, t 
 	}
 
 	if len(deniedMethodFields) > 0 {
+		methods := []string{}
+		for k := range deniedMethodFields {
+			methods = append(methods, k)
+		}
+		sort.Strings(methods)
+
 		p.P(`// ValidateDeniedFields function return denied fields of object`, t, `.`)
 		p.P(`func (o *`, t, `) ValidateDeniedFields() map[string][]string {`)
 		p.P(`return map[string][]string{`)
-		for method, fields := range deniedMethodFields {
+		for _, method := range methods {
+			fields := deniedMethodFields[method]
 			if len(fields) > 0 {
 				p.P(fmt.Sprintf(`"%s":[]string{"`, method), strings.Join(fields, `","`), `"},`)
 			}
@@ -466,10 +473,17 @@ func (p *Plugin) generateValidateRequired(md *descriptor.DescriptorProto, t stri
 	}
 
 	if len(requiredMethodFields) > 0 {
+		methods := []string{}
+		for k := range requiredMethodFields {
+			methods = append(methods, k)
+		}
+		sort.Strings(methods)
+
 		p.P(`// ValidateRequiredFields function return required fields of object`, t, `.`)
 		p.P(`func (o *`, t, `) ValidateRequiredFields() map[string][]string {`)
 		p.P(`return map[string][]string{`)
-		for method, fields := range requiredMethodFields {
+		for _, method := range methods {
+			fields := requiredMethodFields[method]
 			if len(fields) > 0 {
 				p.P(fmt.Sprintf(`"%s":[]string{"`, method), strings.Join(fields, `","`), `"},`)
 			}
