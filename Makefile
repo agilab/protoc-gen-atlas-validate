@@ -4,8 +4,8 @@ SRCPATH := $(patsubst %/,%,$(GOPATH))/src
 PROJECT_ROOT := github.com/infobloxopen/protoc-gen-atlas-validate
 
 DOCKERFILE_PATH := $(CURDIR)/docker
-IMAGE_REGISTRY ?= infoblox
-IMAGE_VERSION  ?= dev-atlasvalidate
+IMAGE_REGISTRY ?= molon
+IMAGE_VERSION  ?= latest #dev-atlasvalidate
 
 # configuration for the protobuf gentool
 SRCROOT_ON_HOST      := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -13,7 +13,7 @@ SRCROOT_IN_CONTAINER := /home/go/src/$(PROJECT_ROOT)
 DOCKERPATH           := /home/go/src
 DOCKER_RUNNER        := docker run --rm
 DOCKER_RUNNER        += -v $(SRCROOT_ON_HOST):$(SRCROOT_IN_CONTAINER)
-DOCKER_GENERATOR     := infoblox/atlas-gentool:$(IMAGE_VERSION)
+DOCKER_GENERATOR     := $(IMAGE_REGISTRY)/atlas-gentool:$(IMAGE_VERSION)
 GENERATOR            := $(DOCKER_RUNNER) $(DOCKER_GENERATOR)
 
 GENVALIDATE_IMAGE      := $(IMAGE_REGISTRY)/atlas-gentool
