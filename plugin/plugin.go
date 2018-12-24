@@ -497,17 +497,26 @@ func (p *Plugin) generateValidateRequired(md *descriptor.DescriptorProto, t stri
 	p.P(`method := validate_runtime.HTTPMethodFromContext(ctx)`)
 	p.P(`_ = method`)
 
-	for fn, methods := range requiredFields {
-		if len(methods) == 3 {
-			p.P(fmt.Sprintf(`if _, ok := v["%s"]; !ok {`, fn))
-			p.P(fmt.Sprintf(`fieldPath := validate_runtime.JoinPath(path, "%s")`, fn))
-			p.P(`return fmt.Errorf("field %q is required for %q operation.", fieldPath, method)`)
-			p.P(`}`)
-		} else {
-			p.P(fmt.Sprintf(`if _, ok := v["%s"]; !ok && (method == "%s"){`, fn, strings.Join(methods, `" || method == "`)))
-			p.P(fmt.Sprintf(`fieldPath := validate_runtime.JoinPath(path, "%s")`, fn))
-			p.P(`return fmt.Errorf("field %q is required for %q operation.", fieldPath, method)`)
-			p.P(`}`)
+	if len(requiredFields) > 0 {
+		fields := []string{}
+		for k := range requiredFields {
+			fields = append(fields, k)
+		}
+		sort.Strings(fields)
+
+		for _, fn := range fields {
+			methods := requiredFields[fn]
+			if len(methods) == 3 {
+				p.P(fmt.Sprintf(`if _, ok := v["%s"]; !ok {`, fn))
+				p.P(fmt.Sprintf(`fieldPath := validate_runtime.JoinPath(path, "%s")`, fn))
+				p.P(`return fmt.Errorf("field %q is required for %q operation.", fieldPath, method)`)
+				p.P(`}`)
+			} else {
+				p.P(fmt.Sprintf(`if _, ok := v["%s"]; !ok && (method == "%s"){`, fn, strings.Join(methods, `" || method == "`)))
+				p.P(fmt.Sprintf(`fieldPath := validate_runtime.JoinPath(path, "%s")`, fn))
+				p.P(`return fmt.Errorf("field %q is required for %q operation.", fieldPath, method)`)
+				p.P(`}`)
+			}
 		}
 	}
 	p.P(`return nil`)
