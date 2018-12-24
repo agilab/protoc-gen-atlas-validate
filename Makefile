@@ -5,7 +5,7 @@ PROJECT_ROOT := github.com/infobloxopen/protoc-gen-atlas-validate
 
 DOCKERFILE_PATH := $(CURDIR)/docker
 IMAGE_REGISTRY ?= molon
-IMAGE_VERSION  ?= latest #dev-atlasvalidate
+IMAGE_VERSION  ?= dev-atlasvalidate
 
 # configuration for the protobuf gentool
 SRCROOT_ON_HOST      := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -35,6 +35,7 @@ install:
 .PHONY: gentool
 gentool:
 	docker build -f $(GENVALIDATE_DOCKERFILE) -t $(GENVALIDATE_IMAGE):$(IMAGE_VERSION) .
+	docker tag $(GENVALIDATE_IMAGE):$(IMAGE_VERSION) $(GENVALIDATE_IMAGE):latest
 	docker image prune -f --filter label=stage=server-intermediate
 
 gentool-examples: gentool
